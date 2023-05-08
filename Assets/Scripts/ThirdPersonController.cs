@@ -159,6 +159,10 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            if (_input.jump)
+            {
+                GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyAiScript>().Freeze(0, 3);
+            }
         }
 
         private void LateUpdate()
