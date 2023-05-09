@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyAi : MonoBehaviour
 {
-    public NavMeshAgent agent;
+    private NavMeshAgent agent;
 
-    public Transform player;
+    private Transform player;
 
     public LayerMask whatIsGround, whatIsPlayer;
 
@@ -31,8 +31,8 @@ public class EnemyAi : MonoBehaviour
     public bool started;
 
 
-    public bool isEnemySlow = false;
-    public float secondsOfSlow = 0;
+    private bool isEnemySlow = false;
+    private float secondsOfSlow = 0;
     private float timer;
 
     private void Awake()
