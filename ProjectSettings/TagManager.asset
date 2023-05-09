@@ -5,7 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - CinemachineTarget
-  - Lights
+
+  - Enemy
+
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Lights
+
+  - Interactive
+
   - 
   - Character
   - Ground
