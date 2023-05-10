@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 
 public class EnemyAi : MonoBehaviour
 {
-    private NavMeshAgent agent;
-    private Transform player;
-    private Animator animator;
+    public NavMeshAgent agent;
+
+    public Transform player;
 
     public LayerMask whatIsGround, whatIsPlayer;
 
@@ -27,40 +26,28 @@ public class EnemyAi : MonoBehaviour
     bool alreadyAttacked;
 
     //States
-    public float sightRange, attackRange, killRange;
-    public bool playerInSightRange, playerInAttackRange, isAttacking;
+    public float sightRange, attackRange;
+    public bool playerInSightRange, playerInAttackRange;
     public bool started;
 
 
-    private bool isEnemySlow = false;
-    private float secondsOfSlow = 0;
+    public bool isEnemySlow = false;
+    public float secondsOfSlow = 0;
     private float timer;
 
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        
 
         if (started)
         {
             if (isEnemySlow)
             {
-                if(agent.speed == 0f)
-                {
-                    //animator.SetBool("isWalking", false);
-                } else
-                {
-                    //animator.SetBool("isWalking", true);
-                    //animator.SetFloat("WalkSpeed", agent.speed);
-                    //animator.SetFloat("RunSpeed", agent.speed);
-
-                }
                 timer = timer + Time.deltaTime;
                 if (timer >= (secondsOfSlow))
                 {
@@ -72,30 +59,14 @@ public class EnemyAi : MonoBehaviour
                 if (PlayerSighted())
                 {
                     agent.speed = runSpeed;
-                    //animator.SetFloat("RunSpeed", agent.speed);
-                    //animator.SetBool("isWalking", false);
-                    //animator.SetBool("isRunning", true);
                 }
                 else
                 {
                     agent.speed = walkSpeed;
-                    //animator.SetFloat("WalkSpeed", agent.speed);
-                    //animator.SetBool("isWalking", true);
-                    //animator.SetBool("isRunning", false);
                 }
             }
 
-            animator.SetFloat("Speed", agent.speed);
-
-            if (isAttacking)
-            {
-                agent.SetDestination(transform.position);
-            }
-            else
-            {
-                ChasePlayer();
-            }
-            
+            ChasePlayer();
 
             playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
@@ -176,17 +147,14 @@ public class EnemyAi : MonoBehaviour
         {
             ///Attack code here
             ///
-            animator.SetFloat("Speed", 0f);
-            animator.SetTrigger("Attack");
-            //Debug.Log("Attack");
-            //GameObject.FindGameObjectWithTag("Player")
-            //    .GetComponent<CharacterController>().Move(transform.forward * Time.deltaTime * 32f);
+            Debug.Log("Atack");
+            GameObject.FindGameObjectWithTag("Player")
+                .GetComponent<CharacterController>().Move(transform.forward * Time.deltaTime * 32f);
 
             ///End of attack code
 
             alreadyAttacked = true;
-            isAttacking = true;
-            //Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
     private void ResetAttack()
@@ -206,21 +174,6 @@ public class EnemyAi : MonoBehaviour
 
     }
 
-    void KillPlayer()
-    {
-        float dist = (player.position - transform.position).magnitude;
-        if(dist < killRange)
-        {
-            Debug.Log("Game over");
-        }
-    }
-
-    void EndAttack()
-    {
-        isAttacking = false;
-        alreadyAttacked = false;
-    }
-
 
     private void OnDrawGizmosSelected()
     {
@@ -228,7 +181,5 @@ public class EnemyAi : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, sightRange);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, killRange);
     }
 }
