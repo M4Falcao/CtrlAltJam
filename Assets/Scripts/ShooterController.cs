@@ -11,7 +11,7 @@ public class ShooterController : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private float normalSensitivity;
-    [SerializeField] private LayerMask aimColliderMask = new LayerMask();
+    public LayerMask aimColliderMask = new LayerMask();
     //[SerializeField] private Transform debugTransform;
     [SerializeField] private Transform pfBullet;
     [SerializeField] private Transform spawnBulletPosition;
